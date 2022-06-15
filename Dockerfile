@@ -7,6 +7,8 @@ RUN sudo apt-get update \
         cmake \
         git \
         nano \
+        python3 \
+        python3-venv \
         tmux \
       && sudo apt-get clean \
       && sudo rm -rf /var/lib/apt/lists/*
