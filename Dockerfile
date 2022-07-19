@@ -30,4 +30,6 @@ ENV PICO_TOOLCHAIN_PATH=/opt/rp2040
 # creates defaults if coders home is mounted as volume.
 RUN touch .initialized_home && tar czf /opt/home.tar.gz . 
 COPY my-entrypoint.sh /usr/bin/my-entrypoint.sh
-ENTRYPOINT ["/usr/bin/my-entrypoint.sh", "--bind-addr", "0.0.0.0:8080", "."]
+RUN mv /usr/bin/entrypoint.sh /usr/bin/entrypoint-code-server.sh \
+      mv /usr/bin/my-entrypoint.sh /usr/bin/entrypoint.sh
+#ENTRYPOINT ["/usr/bin/my-entrypoint.sh", "--bind-addr", "0.0.0.0:8080", "."]
