@@ -43,13 +43,14 @@ ENV IDF_TOOLS_PATH=/opt/esp32
 ENV ESP32_PYTHON_PATH=/usr/bin
 ENV PICO_TOOLCHAIN_PATH=/opt/rp2040
 
-# Extracting home.tar.gz to coders home with custom entrypoint
-# creates defaults if coders home is mounted as volume.
-RUN touch .initialized_home && tar czf /opt/home.tar.gz .
+# Extracting home*.tar.gz to home with init-home.sh entrypoint
+# to creates defaults if coders home is mounted as volume.
+RUN tar -czvf /opt/home.tar.gz --exclude="./.local" . \
+      && tar -czvf /opt/home.local.tar.gz ./.local
 
 #COPY my-entrypoint.sh /usr/bin/my-entrypoint.sh
 #RUN mv /usr/bin/entrypoint.sh /usr/bin/entrypoint-code-server.sh \
 #      mv /usr/bin/my-entrypoint.sh /usr/bin/entrypoint.sh
 #ENTRYPOINT ["/usr/bin/my-entrypoint.sh", "--bind-addr", "0.0.0.0:8080", "."]
 # https://github.com/coder/code-server/pull/5194
-COPY entrypoint.d/* ${HOME}/entrypoint.d/
+COPY entrypoint.d/* ${ENTRYPOINTD}/
