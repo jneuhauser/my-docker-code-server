@@ -21,7 +21,7 @@ if mountpoint "${HOME}"; then
   do
     rm -rf "${HOME}"/"${dir}" >/dev/null 2>&1
     tar -I pigz -xvf /home/coder.tar.gz -C "${HOME}" "${dir}"
-    TAR_ADD_ARGS+=("--exclude=\"${dir}\"")
+    TAR_ADD_ARGS+=("--exclude=${dir}")
   done
 
   # make code-server machine/user settings.json persistent
