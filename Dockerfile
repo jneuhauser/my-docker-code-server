@@ -1,4 +1,6 @@
-FROM codercom/code-server:latest
+ARG CODE_SERVER_IMG=codercom/code-server
+ARG CODE_SERVER_TAG=latest
+FROM ${CODE_SERVER_TAG}:${CODE_SERVER_TAG}
 
 RUN sudo apt-get update \
       && sudo apt-get install -y --no-install-recommends \
