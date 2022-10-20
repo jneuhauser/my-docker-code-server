@@ -10,6 +10,7 @@ RUN sudo apt-get update \
         clang-format \
         clang-tidy \
         cmake \
+        command-not-found \
         git \
         nano \
         python3 \
