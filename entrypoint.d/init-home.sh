@@ -6,8 +6,8 @@ REPLACE_HOME=(
 )
 TAR_ADD_ARGS=()
 
-#exec 1>"${HOME}"/init-home.sh.log
-#exec 2>&1
+exec 1>"${HOME}"/init-home.sh.log
+exec 2>&1
 set -x
 
 echo "${0} - $(date) - start"
