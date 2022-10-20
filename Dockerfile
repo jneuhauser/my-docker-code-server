@@ -23,7 +23,7 @@ RUN sudo chown 1000:1000 /opt \
       && git clone --depth 1 -b "${SMING_REF}" \
         https://github.com/SmingHub/Sming /opt/sming \
       && /bin/bash -c ". /opt/sming/Tools/install.sh all" \
-      && rm -rf /home/coder/{.cache,.wget-hsts,downloads}
+      && /bin/bash -c "rm -rf /home/coder/{.cache,.wget-hsts,downloads}"
 ENV SMING_HOME=/opt/sming/Sming
 ENV ESP_HOME=/opt/esp-quick-toolchain
 ENV IDF_PATH=/opt/esp-idf
