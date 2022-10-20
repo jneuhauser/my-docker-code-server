@@ -16,6 +16,13 @@ if mountpoint "${HOME}"; then
   rm -rf "${HOME}"/.local >/dev/null 2>&1
   tar -xvf /opt/home.local.tar.gz -C "${HOME}"
 
+  # create code-server user settings.json symlink in ~/.config
+  mkdir -p "${HOME}"/.config/code-server
+  touch "${HOME}"/.config/code-server/settings.json
+  mkdir -p "${HOME}"/.local/share/code-server/User
+  ln -s "${HOME}"/.config/code-server/settings.json \
+    "${HOME}"/.local/share/code-server/User/settings.json
+
   # create non existing user home files like .profile, .bashrc, ...
   tar -xvf /opt/home.tar.gz --skip-old-files -C "${HOME}"
 fi
