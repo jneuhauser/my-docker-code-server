@@ -47,7 +47,6 @@ RUN /bin/bash -c 'for ext in ${INSTALL_EXTENSIONS//,/ }; do code-server --instal
 ENV ENTRYPOINTD=/entrypoint.d
 COPY entrypoint.d/* ${ENTRYPOINTD}/
 
-# Extracting home*.tar.gz to home with entrypoint.d/init-home.sh
+# Extracting coder.tar.gz to home with entrypoint.d/init-home.sh
 # script to create default files if /home/coder is a mountpoint.
-RUN tar -czvf /opt/home.tar.gz --exclude="./.local" . \
-      && tar -czvf /opt/home.local.tar.gz ./.local
+RUN sudo tar -czvf /home/coder.tar.gz -C /home/coder .
