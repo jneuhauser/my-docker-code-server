@@ -20,7 +20,7 @@ if mountpoint "${HOME}"; then
   for dir in "${REPLACE_HOME[@]}"
   do
     rm -rf "${HOME}"/"${dir}" >/dev/null 2>&1
-    tar -xvf /home/coder.tar.gz -C "${HOME}" "${dir}"
+    tar -I pigz -xvf /home/coder.tar.gz -C "${HOME}" "${dir}"
     TAR_ADD_ARGS+=("--exclude=\"${dir}\"")
   done
 
@@ -38,7 +38,7 @@ if mountpoint "${HOME}"; then
 
   # create non existing user home files/dirs
   # except files/dirs defined in REPLACE_HOME
-  tar -xvf /home/coder.tar.gz -C "${HOME}" --skip-old-files \
+  tar -I pigz -xvf /home/coder.tar.gz -C "${HOME}" --skip-old-files \
     "${TAR_ADD_ARGS[@]}"
 fi
 

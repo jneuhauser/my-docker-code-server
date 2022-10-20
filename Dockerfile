@@ -13,6 +13,7 @@ RUN sudo apt-get update \
         command-not-found \
         git \
         nano \
+        pigz \
         python3 \
         python3-venv \
         shellcheck \
@@ -49,4 +50,4 @@ COPY entrypoint.d/* ${ENTRYPOINTD}/
 
 # Extracting coder.tar.gz to home with entrypoint.d/init-home.sh
 # script to create default files if /home/coder is a mountpoint.
-RUN sudo tar -czvf /home/coder.tar.gz -C /home/coder .
+RUN sudo tar -I pigz -cvf /home/coder.tar.gz -C /home/coder .
