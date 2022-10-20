@@ -18,12 +18,14 @@ RUN /bin/bash -c 'for ext in ${INSTALL_EXTENSIONS//,/ }; do code-server --instal
 RUN sudo apt-get update \
       && sudo apt-get install -y --no-install-recommends \
         bash \
+        bash-completion \
         build-essential \
         cmake \
         git \
         nano \
         python3 \
         python3-venv \
+        shellcheck \
         tmux \
       && sudo apt-get clean \
       && sudo rm -rf /var/lib/apt/lists/*
