@@ -20,6 +20,8 @@ RUN sudo apt-get update \
         bash \
         bash-completion \
         build-essential \
+        clang-format \
+        clang-tidy \
         cmake \
         git \
         nano \
