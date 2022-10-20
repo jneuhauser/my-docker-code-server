@@ -1,20 +1,5 @@
 FROM codercom/code-server:latest
 
-# Install VSCode extensions
-#ARG OPENVSX_EXTENSIONS="eamodio.gitlens,ms-python.python,ms-azuretools.vscode-docker"
-#RUN for ext in ${OPENVSX_EXTENSIONS//,/ }; do \
-#      code-server --install-extension "${ext}"; \
-#    done
-
-#ARG CPPTOOLS_VSIX_URL=https://github.com/microsoft/vscode-cpptools/releases/download/v1.10.8/cpptools-linux.vsix
-#RUN wget -O extension.vsix "${CPPTOOLS_VSIX_URL}" && \
-#      code-server --install-extension extension.vsix
-
-ARG INSTALL_EXTENSIONS="ms-python.python,ms-vscode.cpptools,eamodio.gitlens,timonwong.shellcheck"
-# https://coder.com/docs/code-server/latest/FAQ#how-do-i-use-my-own-extensions-marketplace
-ENV EXTENSIONS_GALLERY='{"serviceUrl":"https://marketplace.visualstudio.com/_apis/public/gallery","cacheUrl":"https://vscode.blob.core.windows.net/gallery/index","itemUrl":"https://marketplace.visualstudio.com/items"}'
-RUN /bin/bash -c 'for ext in ${INSTALL_EXTENSIONS//,/ }; do code-server --install-extension "${ext}"; done'
-
 RUN sudo apt-get update \
       && sudo apt-get install -y --no-install-recommends \
         bash \
@@ -32,12 +17,13 @@ RUN sudo apt-get update \
       && sudo apt-get clean \
       && sudo rm -rf /var/lib/apt/lists/*
 
+# Install SmingFramework developer setup
 ARG SMING_REF=master
 RUN sudo chown 1000:1000 /opt \
       && git clone --depth 1 -b "${SMING_REF}" \
         https://github.com/SmingHub/Sming /opt/sming \
       && /bin/bash -c ". /opt/sming/Tools/install.sh all" \
-      && rm -rf /home/coder/.cache /home/coder/downloads
+      && rm -rf /home/coder/{.cache,.wget-hsts,downloads}
 ENV SMING_HOME=/opt/sming/Sming
 ENV ESP_HOME=/opt/esp-quick-toolchain
 ENV IDF_PATH=/opt/esp-idf
@@ -45,14 +31,20 @@ ENV IDF_TOOLS_PATH=/opt/esp32
 ENV ESP32_PYTHON_PATH=/usr/bin
 ENV PICO_TOOLCHAIN_PATH=/opt/rp2040
 
-# Extracting home*.tar.gz to home with init-home.sh entrypoint
-# to creates defaults if coders home is mounted as volume.
+# Setup microsoft vscode extension store.
+# https://coder.com/docs/code-server/latest/FAQ#how-do-i-use-my-own-extensions-marketplace
+ENV EXTENSIONS_GALLERY='{"serviceUrl":"https://marketplace.visualstudio.com/_apis/public/gallery","cacheUrl":"https://vscode.blob.core.windows.net/gallery/index","itemUrl":"https://marketplace.visualstudio.com/items"}'
+
+# Install some useful vscode extensions.
+ARG INSTALL_EXTENSIONS="ms-python.python,ms-vscode.cpptools,eamodio.gitlens,timonwong.shellcheck"
+RUN /bin/bash -c 'for ext in ${INSTALL_EXTENSIONS//,/ }; do code-server --install-extension "${ext}"; done'
+
+# Set entrypoint dir and copy custom scripts into it.
+# https://github.com/coder/code-server/pull/5194
+ENV ENTRYPOINTD=/entrypoint.d
+COPY entrypoint.d/* ${ENTRYPOINTD}/
+
+# Extracting home*.tar.gz to home with entrypoint.d/init-home.sh
+# script to create default files if /home/coder is a mountpoint.
 RUN tar -czvf /opt/home.tar.gz --exclude="./.local" . \
       && tar -czvf /opt/home.local.tar.gz ./.local
-
-#COPY my-entrypoint.sh /usr/bin/my-entrypoint.sh
-#RUN mv /usr/bin/entrypoint.sh /usr/bin/entrypoint-code-server.sh \
-#      mv /usr/bin/my-entrypoint.sh /usr/bin/entrypoint.sh
-#ENTRYPOINT ["/usr/bin/my-entrypoint.sh", "--bind-addr", "0.0.0.0:8080", "."]
-# https://github.com/coder/code-server/pull/5194
-COPY entrypoint.d/* ${ENTRYPOINTD}/
