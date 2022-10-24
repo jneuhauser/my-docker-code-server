@@ -40,7 +40,7 @@ ENV PICO_TOOLCHAIN_PATH=/opt/rp2040
 ENV EXTENSIONS_GALLERY='{"serviceUrl":"https://marketplace.visualstudio.com/_apis/public/gallery","cacheUrl":"https://vscode.blob.core.windows.net/gallery/index","itemUrl":"https://marketplace.visualstudio.com/items"}'
 
 # Install some useful vscode extensions.
-ARG INSTALL_EXTENSIONS="ms-python.python,ms-vscode.cpptools,eamodio.gitlens,timonwong.shellcheck"
+ARG INSTALL_EXTENSIONS="ms-python.python,ms-vscode.cpptools,ms-vscode.cpptools-extension-pack,eamodio.gitlens,timonwong.shellcheck"
 RUN /bin/bash -c 'for ext in ${INSTALL_EXTENSIONS//,/ }; do code-server --install-extension "${ext}"; done'
 
 # Set entrypoint dir and copy custom scripts into it.
