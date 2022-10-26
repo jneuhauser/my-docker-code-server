@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - 'main'
+  schedule:
+    - cron: '5 4 * * 6'  # every saturday at 04:05
 
 jobs:
   docker:
