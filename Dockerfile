@@ -22,7 +22,7 @@ RUN sudo apt-get update \
       && sudo rm -rf /var/lib/apt/lists/*
 
 # Install SmingFramework developer setup
-ARG SMING_REPO=https://github.com/SmingHub/Sming
+ARG SMING_REPO=https://github.com/jneuhauser/Sming
 ARG SMING_REF=master
 RUN sudo chown 1000:1000 /opt \
       && git clone --depth 1 -b "${SMING_REF}" "${SMING_REPO}" /opt/sming \
