@@ -13,11 +13,13 @@ RUN sudo apt-get update \
         command-not-found \
         git \
         nano \
+        picocom \
         pigz \
         python3 \
         python3-venv \
         shellcheck \
         tmux \
+        tio \
       && sudo apt-get clean \
       && sudo rm -rf /var/lib/apt/lists/*
 
